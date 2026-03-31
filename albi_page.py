@@ -41,7 +41,11 @@ def render_albi_page():
             ]
 
             if product_options:
-                selected = st.selectbox("Vyber produkt", product_options, key="albi_select_product")
+                selected = st.selectbox(
+                    "Vyber produkt",
+                    product_options,
+                    key="albi_select_product"
+                )
                 row_index = int(selected.split("|")[0].strip())
 
                 product_name = df.iloc[row_index].get("product_name", "")
@@ -73,7 +77,12 @@ def render_albi_page():
     if st.session_state["albi_prompt"]:
         prompt_text = st.session_state["albi_prompt"]
 
-        st.text_area("Prompt", value=prompt_text, height=300, key="albi_prompt_preview")
+        st.text_area(
+            "Prompt",
+            value=prompt_text,
+            height=300,
+            key="albi_prompt_preview"
+        )
 
         st.components.v1.html(
             f"""
@@ -84,7 +93,49 @@ def render_albi_page():
             height=40,
         )
 
-    ai_output = st.text_area("AI Output", height=400, key="albi_ai_output")
+    ai_output = st.text_area(
+        "AI Output",
+        height=400,
+        key="albi_ai_output"
+    )
+
+    st.markdown("### Odkazy na média")
+
+    def source_value(col_name: str) -> str:
+        if df is not None and row_index is not None and row_index < len(df):
+            return df.iloc[row_index].get(col_name, "")
+        return ""
+
+    intro_image_src = st.text_input(
+        "Odkaz na úvodní obrázek (intro image)",
+        value=source_value("intro_image_src"),
+        key="albi_intro_image_src"
+    )
+    img1_src = st.text_input(
+        "Odkaz na obrázek 1",
+        value=source_value("img1_src"),
+        key="albi_img1_src"
+    )
+    img2_src = st.text_input(
+        "Odkaz na obrázek 2",
+        value=source_value("img2_src"),
+        key="albi_img2_src"
+    )
+    img3_src = st.text_input(
+        "Odkaz na obrázek 3",
+        value=source_value("img3_src"),
+        key="albi_img3_src"
+    )
+    img4_src = st.text_input(
+        "Odkaz na obrázek 4",
+        value=source_value("img4_src"),
+        key="albi_img4_src"
+    )
+    video_url = st.text_input(
+        "Video URL",
+        value=source_value("video_url"),
+        key="albi_video_url"
+    )
 
     if ai_output.strip():
         st.download_button(
@@ -102,11 +153,22 @@ def render_albi_page():
             st.warning("Vlož AI output.")
         else:
             try:
+                extra_values = {
+                    "intro_image_src": intro_image_src.strip(),
+                    "img1_src": img1_src.strip(),
+                    "img2_src": img2_src.strip(),
+                    "img3_src": img3_src.strip(),
+                    "img4_src": img4_src.strip(),
+                    "video_url": video_url.strip(),
+                }
+                extra_values = {k: v for k, v in extra_values.items() if v}
+
                 out_df = apply_kartovani_output_to_csv(
                     df=df,
                     row_index=row_index,
                     ai_output=ai_output,
                     template_kind="albi",
+                    extra_values=extra_values,
                 )
 
                 st.session_state["albi_export_csv_bytes"] = out_df.to_csv(

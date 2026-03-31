@@ -353,6 +353,10 @@ def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict 
         if extra_values:
             values.update(extra_values)
 
+        if not values.get("intro_image_src", "").strip():
+            if values.get("img1_src", "").strip():
+                values["intro_image_src"] = values["img1_src"]
+
         if template_kind == "miniatures":
             values = normalize_miniature_values(values)
 
