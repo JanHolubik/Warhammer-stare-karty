@@ -46,6 +46,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "dice": ["kratky.docx"],
         "upgrades": ["kratky.docx"],
         "accessories": ["kratky_univ.docx"],
+        "albi": ["kratky_albi.docx"],
     }
 
     detail_map = {
@@ -55,6 +56,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "dice": ["detailni_kostky.docx"],
         "upgrades": ["detailni_upgrades.docx"],
         "accessories": ["stetce_pris.docx"],
+        "albi": ["detailni_albi.docx"],
     }
 
     short_map_en = {
@@ -64,6 +66,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "dice": ["kratky_en.docx"],
         "upgrades": ["kratky_en.docx"],
         "accessories": ["kratky_univ_en.docx"],
+        "albi": ["kratky_albi_en.docx"],
     }
 
     detail_map_en = {
@@ -73,6 +76,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "dice": ["detailni_kostky_en.docx"],
         "upgrades": ["detailni_upgrades_en.docx"],
         "accessories": ["stetce_pris en.docx"],
+        "albi": ["detailni_albi_en.docx"],
     }
 
     short_map_sk = {
@@ -82,6 +86,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "dice": ["kratky_sk.docx"],
         "upgrades": ["kratky_sk.docx"],
         "accessories": ["kratky_univ_sk.docx"],
+        "albi": ["kratky_albi_sk.docx"],
     }
 
     detail_map_sk = {
@@ -91,6 +96,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "dice": ["detailni_kostky_sk.docx"],
         "upgrades": ["detailni_upgrades_sk.docx"],
         "accessories": ["stetce_pris sk.docx"],
+        "albi": ["detailni_albi_sk.docx"],
     }
 
     if template_type not in short_map:
