@@ -6,6 +6,9 @@ from kartovani_core import (
     build_kartovani_prompt,
     make_docx_bytes,
     apply_kartovani_output_to_csv,
+    build_kartovani_html,
+    is_valid_image,
+    is_valid_video,
 )
 
 
@@ -18,6 +21,9 @@ def render_albi_page():
 
     if "albi_export_csv_bytes" not in st.session_state:
         st.session_state["albi_export_csv_bytes"] = None
+
+    if "albi_preview_html_map" not in st.session_state:
+        st.session_state["albi_preview_html_map"] = None
 
     uploaded_source_csv = st.file_uploader(
         "Nahraj SOURCE CSV",
@@ -103,11 +109,11 @@ def render_albi_page():
 
     def source_value(col_name: str) -> str:
         if df is not None and row_index is not None and row_index < len(df):
-            return df.iloc[row_index].get(col_name, "")
+            return str(df.iloc[row_index].get(col_name, "") or "")
         return ""
 
     intro_image_src = st.text_input(
-        "Odkaz na úvodní obrázek (intro image)",
+        "Odkaz na úvodní obrázek (první velký obrázek)",
         value=source_value("intro_image_src"),
         key="albi_intro_image_src"
     )
@@ -117,7 +123,7 @@ def render_albi_page():
         key="albi_img1_src"
     )
     img2_src = st.text_input(
-        "Odkaz na obrázek 2",
+        "Odkaz na obrázek 2 (velký roztažený obrazek, dát něco kde nejsou dulezite věci na krajích, ale uprostřed)",
         value=source_value("img2_src"),
         key="albi_img2_src"
     )
@@ -132,10 +138,43 @@ def render_albi_page():
         key="albi_img4_src"
     )
     video_url = st.text_input(
-        "Video URL",
+        "Video URL -.youtube.com/embed/Wo5rp6CEUmw/",
         value=source_value("video_url"),
         key="albi_video_url"
     )
+
+    extra_values = {
+        "intro_image_src": intro_image_src.strip(),
+        "img1_src": img1_src.strip(),
+        "img2_src": img2_src.strip(),
+        "img3_src": img3_src.strip(),
+        "img4_src": img4_src.strip(),
+        "video_url": video_url.strip(),
+    }
+
+    st.markdown("### Stav médií")
+
+    media_rows = [
+        ("intro_image_src", extra_values["intro_image_src"], is_valid_image(extra_values["intro_image_src"])),
+        ("img1_src", extra_values["img1_src"], is_valid_image(extra_values["img1_src"])),
+        ("img2_src", extra_values["img2_src"], is_valid_image(extra_values["img2_src"])),
+        ("img3_src", extra_values["img3_src"], is_valid_image(extra_values["img3_src"])),
+        ("img4_src", extra_values["img4_src"], is_valid_image(extra_values["img4_src"])),
+        ("video_url", extra_values["video_url"], is_valid_video(extra_values["video_url"])),
+    ]
+
+    media_df = pd.DataFrame(
+        [
+            {
+                "pole": name,
+                "vyplněno": "ano" if value else "ne",
+                "platné": "ano" if valid else "ne",
+                "hodnota": value,
+            }
+            for name, value, valid in media_rows
+        ]
+    )
+    st.dataframe(media_df, use_container_width=True)
 
     if ai_output.strip():
         st.download_button(
@@ -146,39 +185,76 @@ def render_albi_page():
             key="albi_download_docx",
         )
 
-    if st.button("Zpracovat do CSV", key="albi_fill_btn"):
-        if df is None or row_index is None:
-            st.warning("Nejdřív nahraj SOURCE CSV a vyber produkt.")
-        elif not ai_output.strip():
-            st.warning("Vlož AI output.")
-        else:
-            try:
-                extra_values = {
-                    "intro_image_src": intro_image_src.strip(),
-                    "img1_src": img1_src.strip(),
-                    "img2_src": img2_src.strip(),
-                    "img3_src": img3_src.strip(),
-                    "img4_src": img4_src.strip(),
-                    "video_url": video_url.strip(),
-                }
-                extra_values = {k: v for k, v in extra_values.items() if v}
+    col1, col2 = st.columns(2)
 
-                out_df = apply_kartovani_output_to_csv(
-                    df=df,
-                    row_index=row_index,
-                    ai_output=ai_output,
-                    template_kind="albi",
-                    extra_values=extra_values,
-                )
+    with col1:
+        if st.button("Náhled HTML", key="albi_preview_btn"):
+            if not ai_output.strip():
+                st.warning("Vlož AI output.")
+            else:
+                try:
+                    cleaned_extra_values = {k: v for k, v in extra_values.items() if v}
+                    html_map = build_kartovani_html(
+                        ai_output=ai_output,
+                        template_kind="albi",
+                        extra_values=cleaned_extra_values,
+                    )
+                    st.session_state["albi_preview_html_map"] = html_map
+                    st.success("Náhled HTML připraven.")
+                except Exception as e:
+                    st.error(f"Chyba při generování náhledu: {e}")
 
-                st.session_state["albi_export_csv_bytes"] = out_df.to_csv(
-                    index=False,
-                    sep=";"
-                ).encode("utf-8-sig")
+    with col2:
+        if st.button("Zpracovat do CSV", key="albi_fill_btn"):
+            if df is None or row_index is None:
+                st.warning("Nejdřív nahraj SOURCE CSV a vyber produkt.")
+            elif not ai_output.strip():
+                st.warning("Vlož AI output.")
+            else:
+                try:
+                    cleaned_extra_values = {k: v for k, v in extra_values.items() if v}
 
-                st.success("ALBI CSV je připravené ke stažení.")
-            except Exception as e:
-                st.error(f"Chyba při zpracování: {e}")
+                    out_df = apply_kartovani_output_to_csv(
+                        df=df,
+                        row_index=row_index,
+                        ai_output=ai_output,
+                        template_kind="albi",
+                        extra_values=cleaned_extra_values,
+                    )
+
+                    st.session_state["albi_export_csv_bytes"] = out_df.to_csv(
+                        index=False,
+                        sep=";"
+                    ).encode("utf-8-sig")
+
+                    st.success("ALBI CSV je připravené ke stažení.")
+                except Exception as e:
+                    st.error(f"Chyba při zpracování: {e}")
+
+    preview_map = st.session_state.get("albi_preview_html_map")
+    if preview_map:
+        st.markdown("## Náhled výsledku")
+
+        preview_lang = st.selectbox(
+            "Jazyk náhledu",
+            ["cs", "en", "sk"],
+            key="albi_preview_lang"
+        )
+
+        short_key = f"shortDescription:{preview_lang}"
+        long_key = f"description:{preview_lang}"
+
+        tab1, tab2 = st.tabs(["Krátký popis", "Detailní popis"])
+
+        with tab1:
+            short_html = preview_map.get(short_key, "")
+            st.code(short_html, language="html")
+            st.components.v1.html(short_html, height=800, scrolling=True)
+
+        with tab2:
+            long_html = preview_map.get(long_key, "")
+            st.code(long_html, language="html")
+            st.components.v1.html(long_html, height=1000, scrolling=True)
 
     if st.session_state["albi_export_csv_bytes"] is not None:
         st.download_button(

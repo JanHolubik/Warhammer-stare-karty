@@ -8,6 +8,9 @@ from kartovani_core import (
     build_kartovani_prompt,
     make_docx_bytes,
     apply_kartovani_output_to_csv,
+    build_kartovani_html,
+    is_valid_image,
+    is_valid_video,
 )
 
 
@@ -53,6 +56,9 @@ def render_kartovani_page():
     if "generated_prompt_type" not in st.session_state:
         st.session_state["generated_prompt_type"] = ""
 
+    if "kartovani_preview_html_map" not in st.session_state:
+        st.session_state["kartovani_preview_html_map"] = None
+
     state_key = "kartovani_export_csv_bytes"
     if state_key not in st.session_state:
         st.session_state[state_key] = None
@@ -64,7 +70,7 @@ def render_kartovani_page():
 
         name = st.text_input("Název produktu", key="kartovani_name")
         code = st.text_input("Kód produktu - nutné a povinné!", key="kartovani_code")
-        external_code = st.text_input("External code", key="kartovani_external_code")
+        external_code = st.text_input("External code SKLAD - Kód značky", key="kartovani_external_code")
         ean = st.text_input("EAN kód - dáváme stejné jako CODE", key="kartovani_ean")
         price = st.number_input(
             "Prodejní cena s DPH",
@@ -212,6 +218,7 @@ def render_kartovani_page():
 
                 st.session_state["generated_prompt_text"] = prompt_text
                 st.session_state["generated_prompt_type"] = prompt_type
+                st.session_state["kartovani_selected_template_kind"] = prompt_type
 
             except Exception as e:
                 st.error(f"Chyba při načítání promptu: {e}")
@@ -287,15 +294,79 @@ nazev_produktu:
 
         def source_value(col_name: str) -> str:
             if df is not None and row_index is not None and row_index < len(df):
-                return df.iloc[row_index].get(col_name, "")
+                return str(df.iloc[row_index].get(col_name, "") or "")
             return ""
-        intro_image_src = st.text_input("Odkaz na úvodní obrázek (intro image)", value=source_value("intro_image_src"), key="kartovani_intro_image_src")
-        img1_src = st.text_input("Odkaz na obrázek 1", value=source_value("img1_src"), key="kartovani_img1_src")
-        img2_src = st.text_input("Odkaz na obrázek 2", value=source_value("img2_src"), key="kartovani_img2_src")
-        img3_src = st.text_input("Odkaz na obrázek 3", value=source_value("img3_src"), key="kartovani_img3_src")
-        img4_src = st.text_input("Odkaz na obrázek 4", value=source_value("img4_src"), key="kartovani_img4_src")
-        img5_src = st.text_input("Odkaz na obrázek 5", value=source_value("img5_src"), key="kartovani_img5_src")
-        video_url = st.text_input("Video URL", value=source_value("video_url"), key="kartovani_fill_video_url")
+
+        intro_image_src = st.text_input(
+            "Odkaz na úvodní obrázek (intro image)",
+            value=source_value("intro_image_src"),
+            key="kartovani_intro_image_src"
+        )
+        img1_src = st.text_input(
+            "Odkaz na obrázek 1",
+            value=source_value("img1_src"),
+            key="kartovani_img1_src"
+        )
+        img2_src = st.text_input(
+            "Odkaz na obrázek 2",
+            value=source_value("img2_src"),
+            key="kartovani_img2_src"
+        )
+        img3_src = st.text_input(
+            "Odkaz na obrázek 3",
+            value=source_value("img3_src"),
+            key="kartovani_img3_src"
+        )
+        img4_src = st.text_input(
+            "Odkaz na obrázek 4",
+            value=source_value("img4_src"),
+            key="kartovani_img4_src"
+        )
+        img5_src = st.text_input(
+            "Odkaz na obrázek 5",
+            value=source_value("img5_src"),
+            key="kartovani_img5_src"
+        )
+        video_url = st.text_input(
+            "Video URL",
+            value=source_value("video_url"),
+            key="kartovani_fill_video_url"
+        )
+
+        extra_values = {
+            "intro_image_src": intro_image_src.strip(),
+            "img1_src": img1_src.strip(),
+            "img2_src": img2_src.strip(),
+            "img3_src": img3_src.strip(),
+            "img4_src": img4_src.strip(),
+            "img5_src": img5_src.strip(),
+            "video_url": video_url.strip(),
+        }
+
+        st.markdown("### Stav médií")
+
+        media_rows = [
+            ("intro_image_src", extra_values["intro_image_src"], is_valid_image(extra_values["intro_image_src"])),
+            ("img1_src", extra_values["img1_src"], is_valid_image(extra_values["img1_src"])),
+            ("img2_src", extra_values["img2_src"], is_valid_image(extra_values["img2_src"])),
+            ("img3_src", extra_values["img3_src"], is_valid_image(extra_values["img3_src"])),
+            ("img4_src", extra_values["img4_src"], is_valid_image(extra_values["img4_src"])),
+            ("img5_src", extra_values["img5_src"], is_valid_image(extra_values["img5_src"])),
+            ("video_url", extra_values["video_url"], is_valid_video(extra_values["video_url"])),
+        ]
+
+        media_df = pd.DataFrame(
+            [
+                {
+                    "pole": name,
+                    "vyplněno": "ano" if value else "ne",
+                    "platné": "ano" if valid else "ne",
+                    "hodnota": value,
+                }
+                for name, value, valid in media_rows
+            ]
+        )
+        st.dataframe(media_df, use_container_width=True)
 
         if ai_output.strip():
             prompt_docx_bytes = make_docx_bytes(ai_output)
@@ -307,40 +378,78 @@ nazev_produktu:
                 key="kartovani_download_docx",
             )
 
-        if st.button("Zpracovat do CSV", key="kartovani_fill_btn"):
-            if df is None or row_index is None:
-                st.warning("Nejdřív nahraj SOURCE CSV a vyber produkt.")
-            elif not ai_output.strip():
-                st.warning("Vlož AI output.")
-            else:
-                try:
-                    extra_values = {
-                        "intro_image_src": intro_image_src.strip(),
-                        "img1_src": img1_src.strip(),
-                        "img2_src": img2_src.strip(),
-                        "img3_src": img3_src.strip(),
-                        "img4_src": img4_src.strip(),
-                        "img5_src": img5_src.strip(),
-                        "video_url": video_url.strip(),
-                    }
-                    extra_values = {k: v for k, v in extra_values.items() if v}
+        action_col1, action_col2 = st.columns(2)
 
-                    out_df = apply_kartovani_output_to_csv(
-                        df=df,
-                        row_index=row_index,
-                        ai_output=ai_output,
-                        template_kind=st.session_state["kartovani_selected_template_kind"],
-                        extra_values=extra_values,
-                    )
+        with action_col1:
+            if st.button("Náhled HTML", key="kartovani_preview_btn"):
+                if not ai_output.strip():
+                    st.warning("Vlož AI output.")
+                else:
+                    try:
+                        cleaned_extra_values = {k: v for k, v in extra_values.items() if v}
 
-                    st.session_state[state_key] = out_df.to_csv(
-                        index=False,
-                        sep=";"
-                    ).encode("utf-8-sig")
+                        html_map = build_kartovani_html(
+                            ai_output=ai_output,
+                            template_kind=st.session_state["kartovani_selected_template_kind"],
+                            extra_values=cleaned_extra_values,
+                        )
 
-                    st.success("CSV připraveno ke stažení.")
-                except Exception as e:
-                    st.error(f"Chyba při zpracování: {e}")
+                        st.session_state["kartovani_preview_html_map"] = html_map
+                        st.success("Náhled HTML připraven.")
+                    except Exception as e:
+                        st.error(f"Chyba při generování náhledu: {e}")
+
+        with action_col2:
+            if st.button("Zpracovat do CSV", key="kartovani_fill_btn"):
+                if df is None or row_index is None:
+                    st.warning("Nejdřív nahraj SOURCE CSV a vyber produkt.")
+                elif not ai_output.strip():
+                    st.warning("Vlož AI output.")
+                else:
+                    try:
+                        cleaned_extra_values = {k: v for k, v in extra_values.items() if v}
+
+                        out_df = apply_kartovani_output_to_csv(
+                            df=df,
+                            row_index=row_index,
+                            ai_output=ai_output,
+                            template_kind=st.session_state["kartovani_selected_template_kind"],
+                            extra_values=cleaned_extra_values,
+                        )
+
+                        st.session_state[state_key] = out_df.to_csv(
+                            index=False,
+                            sep=";"
+                        ).encode("utf-8-sig")
+
+                        st.success("CSV připraveno ke stažení.")
+                    except Exception as e:
+                        st.error(f"Chyba při zpracování: {e}")
+
+        preview_map = st.session_state.get("kartovani_preview_html_map")
+        if preview_map:
+            st.markdown("## Náhled výsledku")
+
+            preview_lang = st.selectbox(
+                "Jazyk náhledu",
+                ["cs", "en", "sk"],
+                key="kartovani_preview_lang"
+            )
+
+            short_key = f"shortDescription:{preview_lang}"
+            long_key = f"description:{preview_lang}"
+
+            tab1, tab2 = st.tabs(["Krátký popis", "Detailní popis"])
+
+            with tab1:
+                short_html = preview_map.get(short_key, "")
+                st.code(short_html, language="html")
+                st.components.v1.html(short_html, height=800, scrolling=True)
+
+            with tab2:
+                long_html = preview_map.get(long_key, "")
+                st.code(long_html, language="html")
+                st.components.v1.html(long_html, height=1000, scrolling=True)
 
         if st.session_state[state_key] is not None:
             st.download_button(

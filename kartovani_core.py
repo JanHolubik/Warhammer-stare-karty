@@ -7,6 +7,7 @@ import re
 
 import pandas as pd
 from docx import Document
+from bs4 import BeautifulSoup
 
 VAT_RATE = 1.21
 
@@ -14,6 +15,25 @@ VAT_RATE = 1.21
 BASE_DIR = Path(__file__).resolve().parent
 PROMPT_TEMPLATE_DIR = BASE_DIR / "prompt_templates"
 TEMPLATE_DIR = BASE_DIR / "sablony"
+
+INVALID_IMAGE_VALUES = {
+    "", "/", "placeholder",
+    "intro_image_src", "/intro_image_src",
+    "img1_src", "/img1_src",
+    "img2_src", "/img2_src",
+    "img3_src", "/img3_src",
+    "img4_src", "/img4_src",
+    "img5_src", "/img5_src",
+    "img6_src", "/img6_src",
+    "img7_src", "/img7_src",
+    "img8_src", "/img8_src",
+    "img9_src", "/img9_src",
+    "img10_src", "/img10_src",
+}
+
+INVALID_VIDEO_VALUES = {
+    "", "/", "https://www.youtube.com/embed/", "https://www.youtube.com/embed"
+}
 
 
 def make_docx_bytes(text: str) -> bytes:
@@ -329,6 +349,159 @@ def normalize_miniature_values(values: dict) -> dict:
     return normalized
 
 
+def is_valid_image(value: str | None) -> bool:
+    if value is None:
+        return False
+    return str(value).strip() not in INVALID_IMAGE_VALUES
+
+
+def is_valid_video(value: str | None) -> bool:
+    if value is None:
+        return False
+    return str(value).strip() not in INVALID_VIDEO_VALUES
+
+
+def add_class(tag, class_name: str) -> None:
+    classes = tag.get("class", [])
+    if class_name not in classes:
+        classes.append(class_name)
+        tag["class"] = classes
+
+
+def make_images_clickable(soup: BeautifulSoup) -> None:
+    for img in soup.find_all("img"):
+        src = (img.get("src") or "").strip()
+        if not is_valid_image(src):
+            continue
+
+        parent = img.parent
+        if parent and parent.name == "a" and "image-link" in (parent.get("class") or []):
+            continue
+
+        a = soup.new_tag(
+            "a",
+            href=src,
+            target="_blank",
+            rel="noopener noreferrer"
+        )
+        a["class"] = ["image-link"]
+        img.wrap(a)
+
+
+def cleanup_rendered_html(html: str, values: dict) -> str:
+    soup = BeautifulSoup(html, "html.parser")
+
+    intro_valid = is_valid_image(values.get("intro_image_src", ""))
+    img1_valid = is_valid_image(values.get("img1_src", ""))
+    img2_valid = is_valid_image(values.get("img2_src", ""))
+    img3_valid = is_valid_image(values.get("img3_src", ""))
+    img4_valid = is_valid_image(values.get("img4_src", ""))
+    video_valid = is_valid_video(values.get("video_url", ""))
+
+    # Hero image
+    hero_image = soup.select_one(".hero-image")
+    hero = soup.select_one(".hero")
+    if hero_image and not intro_valid:
+        hero_image.decompose()
+        if hero:
+            add_class(hero, "no-image")
+
+    # Story image + story note
+    story_media = soup.select_one(".story-media")
+    story_split = soup.select_one(".story-split")
+    if story_media and not img1_valid:
+        story_media.decompose()
+        if story_split:
+            add_class(story_split, "no-image")
+
+    # Full bleed image + divider
+    full_bleed = soup.select_one(".full-bleed-image")
+    if full_bleed and not img2_valid:
+        prev = full_bleed.find_previous_sibling()
+        if prev and "soft-divider" in (prev.get("class") or []):
+            prev.decompose()
+        full_bleed.decompose()
+
+    # Duo gallery cards
+    duo_gallery = soup.select_one(".duo-gallery")
+    if duo_gallery:
+        duo_cards = duo_gallery.select(":scope > .duo-card")
+        if len(duo_cards) >= 1 and not img3_valid:
+            duo_cards[0].decompose()
+
+        duo_cards = duo_gallery.select(":scope > .duo-card")
+        if len(duo_cards) >= 2 and not img4_valid:
+            duo_cards[1].decompose()
+
+        duo_cards = duo_gallery.select(":scope > .duo-card")
+        if len(duo_cards) == 1:
+            add_class(duo_gallery, "one-item")
+        elif len(duo_cards) == 0:
+            duo_gallery.decompose()
+
+    # Video section
+    if not video_valid:
+        for section in soup.select("section.section-card"):
+            iframe = section.select_one("iframe")
+            if iframe:
+                section.decompose()
+
+    # Remove any invalid images that still remain
+    for img in soup.find_all("img"):
+        src = (img.get("src") or "").strip()
+        if not is_valid_image(src):
+            parent = img.parent
+            if parent and parent.name == "a" and "image-link" in (parent.get("class") or []):
+                parent.decompose()
+            else:
+                img.decompose()
+
+    # Remove invalid iframes
+    for iframe in soup.find_all("iframe"):
+        src = (iframe.get("src") or "").strip()
+        if not is_valid_video(src):
+            section = iframe.find_parent("section")
+            if section:
+                section.decompose()
+            else:
+                iframe.decompose()
+
+    make_images_clickable(soup)
+
+    return str(soup)
+
+
+def validate_final_html(html: str) -> list[str]:
+    forbidden = [
+        'src="intro_image_src"',
+        'src="/intro_image_src"',
+        'src="img1_src"',
+        'src="/img1_src"',
+        'src="img2_src"',
+        'src="/img2_src"',
+        'src="img3_src"',
+        'src="/img3_src"',
+        'src="img4_src"',
+        'src="/img4_src"',
+        'src="img5_src"',
+        'src="/img5_src"',
+        'src="img6_src"',
+        'src="/img6_src"',
+        'src="img7_src"',
+        'src="/img7_src"',
+        'src="img8_src"',
+        'src="/img8_src"',
+        'src="img9_src"',
+        'src="/img9_src"',
+        'src="img10_src"',
+        'src="/img10_src"',
+        'src=""',
+        'src="/"',
+        'https://www.youtube.com/embed/"',
+    ]
+    return [x for x in forbidden if x in html]
+
+
 def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict | None = None) -> dict:
     lang_blocks = parse_ai_output_to_lang_blocks(ai_output)
 
@@ -360,8 +533,22 @@ def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict 
         if template_kind == "miniatures":
             values = normalize_miniature_values(values)
 
-        out[f"shortDescription:{lang}"] = replace_placeholders_in_docx(short_files[lang], values)
-        out[f"description:{lang}"] = replace_placeholders_in_docx(long_files[lang], values)
+        short_html = replace_placeholders_in_docx(short_files[lang], values)
+        long_html = replace_placeholders_in_docx(long_files[lang], values)
+
+        short_html = cleanup_rendered_html(short_html, values)
+        long_html = cleanup_rendered_html(long_html, values)
+
+        short_errors = validate_final_html(short_html)
+        long_errors = validate_final_html(long_html)
+
+        if short_errors:
+            raise ValueError(f"Neplatné placeholdery v shortDescription:{lang}: {short_errors}")
+        if long_errors:
+            raise ValueError(f"Neplatné placeholdery v description:{lang}: {long_errors}")
+
+        out[f"shortDescription:{lang}"] = short_html
+        out[f"description:{lang}"] = long_html
 
         product_name = (
             values.get("nazev_produktu", "").strip()
@@ -397,23 +584,15 @@ def apply_kartovani_output_to_csv(
         df_out.at[row_index, col] = value
 
     if extra_values:
-        for idx in range(1, 11):
-            source_key = f"img{idx}_src"
-            target_col = "image" if idx == 1 else f"image{idx}"
-            if source_key in extra_values:
-                if target_col not in df_out.columns:
-                    df_out[target_col] = ""
-                df_out.at[row_index, target_col] = extra_values[source_key]
-
         if "video_url" in extra_values:
             if "video_url" not in df_out.columns:
                 df_out["video_url"] = ""
             df_out.at[row_index, "video_url"] = extra_values["video_url"]
 
-    df_out = df_out.drop(
-        columns=[c for c in ["product_name", "name", "description", "shortDescription"] if c in df_out.columns],
-        errors="ignore"
-    )
+            df_out = df_out.drop(
+                columns=[c for c in ["product_name", "name", "description", "shortDescription"] if c in df_out.columns],
+                errors="ignore"
+            )
 
     preferred_order = [
         "code",
@@ -432,16 +611,6 @@ def apply_kartovani_output_to_csv(
         "priceWithoutVat",
         "manufacturer",
         "itemType",
-        "image",
-        "image2",
-        "image3",
-        "image4",
-        "image5",
-        "image6",
-        "image7",
-        "image8",
-        "image9",
-        "image10",
         "video_url",
         "availabilityInStock",
         "availabilityOutOfStock",
