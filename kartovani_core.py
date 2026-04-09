@@ -536,11 +536,19 @@ def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict 
         short_html = replace_placeholders_in_docx(short_files[lang], values)
         long_html = replace_placeholders_in_docx(long_files[lang], values)
 
+        short_html = short_html.replace("<style>", "<style>\n/* DEBUG_SHORT_OK */\n", 1)
+
+        print("==== DEBUG SHORT AFTER REPLACE ====")
+        print(short_html[:500])
+
         # ❌ SHORT NEČISTIT – rozbíjí <style>
         # short_html = cleanup_rendered_html(short_html, values)
 
         # ✅ DETAIL čistit můžeš
         long_html = cleanup_rendered_html(long_html, values)
+
+        print("==== DEBUG SHORT BEFORE SAVE ====")
+        print(short_html[:500])
 
         short_errors = validate_final_html(short_html)
         long_errors = validate_final_html(long_html)
