@@ -138,7 +138,7 @@ def render_albi_page():
         key="albi_img4_src"
     )
     video_url = st.text_input(
-        "Video URL -.youtube.com/embed/Wo5rp6CEUmw/",
+        "Video URL -.youtube.com/embed/Wo5rp6CEUmw",
         value=source_value("video_url"),
         key="albi_video_url"
     )

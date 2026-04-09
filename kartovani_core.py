@@ -536,7 +536,7 @@ def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict 
         short_html = replace_placeholders_in_docx(short_files[lang], values)
         long_html = replace_placeholders_in_docx(long_files[lang], values)
 
-        short_html = cleanup_rendered_html(short_html, values)
+        # SHORT nech bez cleanupu, ať se nesahá na <style>
         long_html = cleanup_rendered_html(long_html, values)
 
         short_errors = validate_final_html(short_html)
