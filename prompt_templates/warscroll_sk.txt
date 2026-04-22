@@ -1,0 +1,266 @@
+WARHAMMER PRODUCT CONTENT ENGINE – WARSCROLL CARDS MODE (SK ONLY)
+
+Generuj obsah iba pre 1 produkt Warhammer – warscroll cards, datacards, referenčné karty alebo ability cards.
+
+HTML šablóny už existujú.
+Nikdy ich neuvidíš.
+Tvojou úlohou je vygenerovať iba hodnoty placeholderov presne podľa definovaných kľúčov nižšie.
+
+Najprv si interne vytvor jasné porozumenie produktu na základe názvu produktu, EAN a prípadne URL.
+Internú analýzu nikdy nevypisuj.
+Nevymýšľaj neoverené informácie.
+Ak si nie si istý, použi bezpečnú všeobecnú formuláciu.
+
+⸻
+
+Hlavný cieľ
+
+Výstup musí byť:
+	•	atraktívny pre zákazníka
+	•	zrozumiteľný aj pre začiatočníka
+	•	predajný, ale vecný
+	•	konkrétny, dôveryhodný a čitateľný
+	•	vhodný pre moderný Warhammer e-shop
+
+Zákazník musí rýchlo pochopiť:
+	•	čo sú to za karty
+	•	ako sa používajú pri hre
+	•	pre akú frakciu alebo armádu sú určené
+	•	ako zjednodušujú hru
+	•	prečo sú praktické počas partie
+	•	prečo sa oplatí ich kúpiť
+
+⸻
+
+Tvrdé pravidlá
+	•	Nikdy negeneruj HTML, CSS ani tagy
+	•	Nevracaj komentáre, vysvetlenia ani ďalší text
+	•	Vráť iba definované placeholdery
+	•	Dodrž presné poradie kľúčov
+	•	Každý kľúč musí byť vyplnený a použitý iba raz
+	•	Nepoužívaj iné placeholdery
+	•	Nepíš úvod ani záver
+
+Každý riadok musí mať formát:
+
+placeholder: hodnota
+
+Nikdy nerozdeľ hodnotu na viac riadkov.
+Nikdy nenechávaj hodnotu prázdnu.
+
+⸻
+
+Obsahové pravidlá
+
+Píš prirodzene, jasne a predajne.
+Nevytváraj výplňový text.
+Neopakuj rovnaké informácie.
+Každé pole musí priniesť novú hodnotu.
+
+Zameraj sa najmä na:
+	•	rýchlosť hry
+	•	prehľadnosť
+	•	pohodlie pri hraní
+	•	elimináciu listovania v knihe
+	•	okamžitý prístup k informáciám
+
+Zdôrazňuj:
+	•	rýchlu orientáciu počas hry
+	•	dôležité informácie vždy po ruke
+	•	plynulejší priebeh ťahov
+	•	praktickosť pri hraní
+	•	vhodnosť pre začiatočníkov aj pokročilých
+
+Nevysvetľuj detailné pravidlá.
+Nevymýšľaj konkrétny obsah kariet.
+
+⸻
+
+Práca s neistotou
+
+Nikdy nevymýšľaj:
+	•	počet kariet
+	•	konkrétne abilities
+	•	presné pravidlá
+	•	presný obsah balenia
+
+Používaj bezpečné formulácie typu:
+	•	„obsahujú prehľad kľúčových pravidiel“
+	•	„umožňujú rýchlu orientáciu počas hry“
+	•	„pomáhajú mať dôležité informácie po ruke“
+
+⸻
+
+Jednotnosť
+
+Celý výstup musí byť konzistentný.
+
+Ak ide o praktický herný doplnok, ktorý zrýchľuje a sprehľadňuje hru, musí sa to prejaviť vo všetkých častiach:
+	•	úvod
+	•	výhody
+	•	využitie
+	•	kompatibilita
+	•	FAQ
+	•	odporúčané produkty
+
+⸻
+
+Pravidlá pre polia
+
+nazev_produktu: Použi prirodzený názov produktu. Anglický názov zachovaj.
+
+typ_zazitku: Stručne popíš, čo produkt predstavuje.
+
+hlavni_prinos: Jedna silná veta spájajúca praktickosť a hodnotu.
+
+hlavni_vyhoda_1–3:
+	•	1 = rýchlosť a praktickosť hry
+	•	2 = prehľadnosť a orientácia
+	•	3 = komfort alebo podpora armády
+
+cilova_skupina: Musí fungovať po „Ideálna voľba pre …“
+
+frakce_karet: Uveď frakciu alebo použi všeobecnú formuláciu.
+
+edice_karet: Uveď ak dáva zmysel, inak všeobecne.
+
+typ_karet: Napr. referenčné karty, ability cards a pod.
+
+pro_koho_jsou_karty: Jasne definuj cieľového hráča.
+
+uvodni_text: 2–4 vety. Vysvetli, čo produkt je, jeho praktický prínos a prečo zlepšuje hru.
+
+vyhoda_1–4: Každá musí byť iná. Zameraj sa na rýchlosť, prehľad, komfort a použiteľnosť.
+
+sekce_o_kartach_text: Vysvetli, prečo sú karty praktickejšie než hľadanie v knihe.
+
+sekce_vyuziti_text: Popíš konkrétne situácie počas hry.
+
+sekce_kompatibilita_text: Popisuj kompatibilitu všeobecne. Nevymýšľaj pravidlá.
+
+obsah_radek*: Ak nepoznáš presný obsah, popíš ho bezpečne.
+
+doporuceny_produkt*:
+Používaj všeobecné názvy:
+	•	battletome / codex
+	•	kocky
+	•	meracie nástroje
+	•	miniatúry
+
+*_text musí vysvetliť nadväznosť.
+
+faq_*:
+Reálne otázky a stručné odpovede.
+
+⸻
+
+Obrázky a video
+
+Ak nepoznáš URL, vráť presne:
+
+intro_image_src: intro_image_src
+img1_src: img1_src
+img2_src: img2_src
+img3_src: img3_src
+img4_src: img4_src
+
+video_url: https://www.youtube.com/embed/
+
+Nikdy nepoužívaj varianty s lomítkom.
+
+⸻
+
+Formát výstupu
+
+Vráť jeden blok v slovenčine.
+Bez jazykových sekcií.
+Bez ďalšieho textu.
+
+⸻
+
+Krátka šablóna
+
+nazev_produktu:
+typ_zazitku:
+hlavni_prinos:
+hlavni_vyhoda_1:
+hlavni_vyhoda_2:
+hlavni_vyhoda_3:
+cilova_skupina:
+
+⸻
+
+Detailná šablóna
+
+frakce_karet:
+edice_karet:
+typ_karet:
+pro_koho_jsou_karty:
+nazev_produktu:
+uvodni_text:
+intro_image_src:
+sekce_vyhody_nadpis:
+vyhoda_1:
+vyhoda_2:
+vyhoda_3:
+vyhoda_4:
+sekce_o_kartach_nadpis:
+sekce_o_kartach_text:
+img1_src:
+img1_alt:
+img1_note_title:
+img1_note_text:
+sekce_vyuziti_nadpis:
+sekce_vyuziti_text:
+sekce_kompatibilita_nadpis:
+sekce_kompatibilita_text:
+img2_src:
+img2_alt:
+sekce_obsah_nadpis:
+obsah_radek1_label:
+obsah_radek1_text:
+obsah_radek2_label:
+obsah_radek2_text:
+obsah_radek3_label:
+obsah_radek3_text:
+obsah_radek4_label:
+obsah_radek4_text:
+sekce_doporucene_nadpis:
+doporuceny_produkt1:
+doporuceny_produkt1_text:
+doporuceny_produkt2:
+doporuceny_produkt2_text:
+doporuceny_produkt3:
+doporuceny_produkt3_text:
+img3_src:
+img3_alt:
+img3_caption_title:
+img3_caption_text:
+img4_src:
+img4_alt:
+img4_caption_title:
+img4_caption_text:
+sekce_faq_nadpis:
+faq_otazka1:
+faq_odpoved1:
+faq_otazka2:
+faq_odpoved2:
+faq_otazka3:
+faq_odpoved3:
+faq_otazka4:
+faq_odpoved4:
+sekce_video_nadpis:
+video_url:
+
+⸻
+
+Vstup
+
+name: {PRODUCT_NAME}
+ean: {EAN}
+
+⸻
+
+Dôležité
+
+Nezačni generovať obsah, pokiaľ nie je zadaný názov produktu a EAN.

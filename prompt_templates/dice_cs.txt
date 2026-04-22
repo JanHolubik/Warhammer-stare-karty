@@ -1,0 +1,251 @@
+WARHAMMER PRODUCT CONTENT ENGINE – DICE MODE PRO (CZ ONLY)
+
+Generuj obsah pouze pro 1 produkt Warhammer – kostky nebo dice set.
+
+HTML šablony již existují.
+Nikdy je neuvidíš.
+Tvým úkolem je vygenerovat pouze hodnoty placeholderů přesně podle definovaných klíčů níže.
+
+Nejprve si interně vytvoř pracovní porozumění produktu na základě názvu produktu, EAN a případně oficiální URL.
+Interní analýzu nikdy nevypisuj.
+Nevymýšlej nic, co není jisté.
+Pokud si nejsi jistý přesným údajem, použij bezpečnou obecnou formulaci.
+
+Hlavní cíl
+
+Výstup musí být:
+	•	atraktivní pro zákazníka
+	•	srozumitelný i pro začátečníka
+	•	prodejní, ale věcný
+	•	konkrétní, důvěryhodný a čtivý
+	•	vhodný pro moderní Warhammer e-shop
+
+Zákazník musí rychle pochopit:
+	•	co jsou to za kostky
+	•	k čemu slouží při hraní
+	•	proč je praktické mít vlastní set
+	•	proč se hodí k dané frakci, armádě nebo stylu hraní
+	•	proč dává smysl si je koupit
+
+Tvrdá pravidla
+
+Nikdy negeneruj HTML, CSS, tagy, komentáře, vysvětlení ani žádný doprovodný text.
+Vracej pouze definované klíče ve stejném pořadí.
+Každý klíč vrať pouze jednou.
+Každý klíč musí být vyplněn.
+Nepoužívej jiné placeholdery než ty, které jsou definované.
+Nepiš úvod ani závěr.
+
+Každý placeholder zapisuj přesně na jeden řádek v tomto formátu:
+
+placeholder: hodnota
+
+Nikdy nedávej hodnotu na další řádek.
+Nikdy nenechávej prázdnou hodnotu.
+
+Obsahová pravidla
+
+Piš přirozeně, silně a prodejně, ale vždy smysluplně.
+Nevytvářej výplňový text.
+Neopakuj stejnou informaci jinými slovy.
+Každé pole musí přinést novou informaci nebo nový úhel pohledu.
+
+Zdůrazňuj hlavně:
+	•	praktické použití při hře
+	•	rychlé házení většího množství kostek
+	•	lepší přehlednost při hodu
+	•	pohodlí při hraní
+	•	styl a identitu frakce
+	•	sběratelskou a tematickou hodnotu
+
+Text nesmí působit roboticky, nudně, technicky přehnaně ani jako strojový překlad.
+
+Práce s nejistotou
+
+Nikdy nevymýšlej:
+	•	přesný počet kostek v balení, pokud není jistý
+	•	přesnou velikost, pokud není jistá
+	•	materiál nebo výrobní technologii, pokud nejsou jisté
+	•	speciální symboly na stěnách kostek, pokud nejsou jisté
+	•	konkrétní pravidlové bonusy nebo speciální mechaniky
+	•	neověřené obrázkové URL
+	•	neověřené video URL
+
+Když přesný údaj není známý, použij bezpečný profesionální text.
+
+Jednotnost textu
+
+Celý výstup musí být vnitřně konzistentní.
+Pokud produkt vyhodnotíš jako tematický frakční doplněk s praktickým využitím při hře, musí se tato logika propsat do úvodu, výhod, kompatibility, FAQ i doporučených produktů.
+
+Pravidla pro jednotlivá pole
+
+nazev_produktu: Použij čistý a přirozený název produktu. Pokud je oficiální název anglický, zachovej jej.
+
+typ_zazitku: Stručně popiš, co produkt představuje.
+
+hlavni_prinos: Jednou silnou větou nebo frází vystihni hlavní přínos produktu. Spoj praktičnost a atraktivitu.
+
+hlavni_vyhoda_1 až hlavni_vyhoda_3:
+Každý bod musí být jiný.
+První zaměř hlavně na praktické hraní.
+Druhý na přehlednost, komfort nebo tempo hry.
+Třetí na styl, frakční identitu nebo sběratelskou hodnotu.
+
+cilova_skupina: Piš přirozeně tak, aby fungovalo spojení „Ideální volba pro …“.
+
+typ_kostek: Stručný a přirozený popis typu produktu.
+
+pocet_v_sade: Uveď jen pokud je jistý, jinak použij obecnou formulaci.
+
+velikost: Uveď jen pokud je jistá, jinak použij obecnou formulaci.
+
+pro_koho_jsou: Jasně řekni, komu produkt dává největší smysl.
+
+uvodni_text: 2 až 4 věty. Rychle vysvětli, co produkt je, jaký má praktický přínos a proč je atraktivní i stylově.
+
+vlastnost_1 až vlastnost_4: Každá vlastnost musí být jiná. Pokryj praktičnost, čitelnost, styl, komfort, tematickou vazbu nebo sběratelskou hodnotu.
+
+sekce_o_kostkach_text: Vysvětli, proč je vlastní dice set výhodnější než běžné univerzální kostky.
+
+sekce_vyuziti_text: Popiš konkrétní herní situace, kde kostky dávají smysl. Nesmí to být kopie úvodu.
+
+vyhoda_1 až vyhoda_3: Krátké, jasné a praktické benefity.
+
+kompatibilita_1_text až kompatibilita_3_text: Popisuj kompatibilitu tematicky, herně nebo uživatelsky. Nikdy nevymýšlej pravidlové bonusy.
+
+obsah_radek1_text až obsah_radek4_text: Když není jisté přesné složení, popiš bezpečně, co sada představuje a k čemu slouží.
+
+prakticke_radek1_text až prakticke_radek3_text: Uváděj konkrétní situace při hře, například opakované útoky, větší série hodů nebo tematické hraní armády.
+
+doporuceny_produkt1 až doporuceny_produkt3: Doporučuj pouze logicky navazující produkty.
+
+faq_otazka1 až faq_otazka4: Piš realistické otázky zákazníka.
+
+faq_odpoved1 až faq_odpoved4: Odpovědi musí být stručné, věcné a důvěryhodné.
+
+navaznost_radek1 až navaznost_radek3: Ukaž logický další krok po koupi kostek.
+
+Obrázky a video
+
+Pokud není známé konkrétní URL, vrať přesně tyto hodnoty:
+
+intro_image_src: intro_image_src
+img1_src: img1_src
+img2_src: img2_src
+img3_src: img3_src
+img4_src: img4_src
+
+Pokud není známé reálné video, vrať přesně:
+
+video_url: https://www.youtube.com/embed/
+
+Formát výstupu
+
+Vrať obsah jako jeden jediný blok v češtině.
+Bez jazykových sekcí.
+Bez dalšího textu.
+
+Krátká šablona
+
+nazev_produktu:
+typ_zazitku:
+hlavni_prinos:
+hlavni_vyhoda_1:
+hlavni_vyhoda_2:
+hlavni_vyhoda_3:
+cilova_skupina:
+
+Detailní šablona
+
+typ_kostek:
+pocet_v_sade:
+velikost:
+pro_koho_jsou:
+nazev_produktu:
+uvodni_text:
+intro_image_src:
+sekce_vlastnosti_nadpis:
+vlastnost_1:
+vlastnost_2:
+vlastnost_3:
+vlastnost_4:
+sekce_o_kostkach_nadpis:
+sekce_o_kostkach_text:
+img1_src:
+img1_alt:
+img1_note_title:
+img1_note_text:
+sekce_vyuziti_nadpis:
+sekce_vyuziti_text:
+sekce_vyhody_nadpis:
+vyhoda_1:
+vyhoda_2:
+vyhoda_3:
+sekce_kompatibilita_nadpis:
+kompatibilita_1_label:
+kompatibilita_1_text:
+kompatibilita_2_label:
+kompatibilita_2_text:
+kompatibilita_3_label:
+kompatibilita_3_text:
+img2_src:
+img2_alt:
+sekce_obsah_nadpis:
+obsah_radek1_label:
+obsah_radek1_text:
+obsah_radek2_label:
+obsah_radek2_text:
+obsah_radek3_label:
+obsah_radek3_text:
+obsah_radek4_label:
+obsah_radek4_text:
+sekce_prakticke_nadpis:
+prakticke_radek1_label:
+prakticke_radek1_text:
+prakticke_radek2_label:
+prakticke_radek2_text:
+prakticke_radek3_label:
+prakticke_radek3_text:
+img3_src:
+img3_alt:
+img3_caption_title:
+img3_caption_text:
+img4_src:
+img4_alt:
+img4_caption_title:
+img4_caption_text:
+sekce_doporucene_nadpis:
+doporuceny_produkt1:
+doporuceny_produkt1_text:
+doporuceny_produkt2:
+doporuceny_produkt2_text:
+doporuceny_produkt3:
+doporuceny_produkt3_text:
+sekce_faq_nadpis:
+faq_otazka1:
+faq_odpoved1:
+faq_otazka2:
+faq_odpoved2:
+faq_otazka3:
+faq_odpoved3:
+faq_otazka4:
+faq_odpoved4:
+sekce_navaznosti_nadpis:
+navaznost_radek1_label:
+navaznost_radek1_text:
+navaznost_radek2_label:
+navaznost_radek2_text:
+navaznost_radek3_label:
+navaznost_radek3_text:
+sekce_video_nadpis:
+video_url:
+
+Vstup
+
+name: {PRODUCT_NAME}
+ean: {EAN}
+
+Důležité
+
+Nezačínej generovat obsah, dokud není dodán název produktu a EAN.

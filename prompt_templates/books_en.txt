@@ -1,0 +1,274 @@
+WARHAMMER PRODUCT CONTENT ENGINE – BOOKS MODE (EN ONLY)
+
+Generate content for only 1 Warhammer product – a book, codex, battletome, rulebook, supplement, or lore publication.
+
+HTML templates already exist.
+You will never see them.
+
+Your task is to generate only the values for the placeholders.
+
+Placeholders must be used exactly as defined below.
+
+⸻
+
+MAIN GOAL
+
+The output must be:
+	•	highly attractive for customers
+	•	instantly clear even for complete beginners
+	•	strongly sales-oriented but still factual
+	•	specific, trustworthy, and useful
+	•	stylistically engaging (not generic)
+	•	suitable for a modern Warhammer e-commerce store
+
+The customer must quickly understand:
+	•	what kind of book this is
+	•	whether it’s rules, lore, or army-focused
+	•	how it helps them in the hobby or gameplay
+	•	who it’s for
+	•	why it’s worth buying right now
+
+⸻
+
+INTERNAL CONTEXT (DO NOT OUTPUT)
+
+First, internally define a short context (max 5 points):
+	•	gameplay or hobby function
+	•	role (rules / lore / collector value)
+	•	overall character of the book
+	•	key benefit
+	•	possible limitation
+
+Never output this context.
+Use it as the foundation for all generated fields.
+
+⸻
+
+HARD LOCK – NO EXCEPTIONS
+	•	Never generate HTML
+	•	Never generate CSS
+	•	Do not use HTML tags
+	•	Do not add comments
+	•	Do not add explanations
+	•	Do not output anything outside placeholders
+	•	Every key must be filled
+	•	Each key must appear exactly once
+	•	Keep the exact order
+	•	Do not add extra quotation marks
+	•	Do not introduce new placeholders
+	•	No empty values
+	•	No intro or outro text
+
+Any deviation = invalid output
+
+⸻
+
+CONTENT RULES (UPGRADED)
+
+Write in a way that:
+	•	sells naturally (no cheap marketing tone)
+	•	is specific (avoid vague filler text)
+	•	is easy and enjoyable to read
+	•	clearly explains value for both players and collectors
+
+Strongly highlight:
+	•	practical usefulness
+	•	clarity and usability
+	•	gameplay or faction understanding
+	•	atmosphere (for lore books)
+	•	strategic value (for rules books)
+
+Each field must add new information.
+
+⸻
+
+HANDLING UNCERTAINTY
+
+Never invent:
+	•	page counts
+	•	exact chapter structure
+	•	specific rules
+	•	datasheets
+	•	unit lists
+
+Use safe phrasing such as:
+	•	“includes a detailed overview…”
+	•	“provides insight into…”
+	•	“expands gameplay options…”
+
+⸻
+
+BOOK TYPE DISTINCTION (CRITICAL)
+
+You must clearly identify the type:
+
+Codex / Battletome
+	•	faction focus
+	•	army-building value
+	•	gameplay relevance
+
+Rulebook / Supplement
+	•	system rules
+	•	gameplay expansion
+	•	additional mechanics
+
+Lore / Black Library
+	•	story
+	•	atmosphere
+	•	Warhammer universe depth
+
+⸻
+
+TONE
+
+Use a tone that is:
+	•	confident
+	•	modern
+	•	sales-oriented but not aggressive
+	•	natural and fluent
+	•	engaging to read
+
+Avoid:
+	•	overly technical language
+	•	robotic phrasing
+	•	empty hype statements
+
+⸻
+
+INPUT
+
+name: {PRODUCT_NAME}
+ean: {EAN}
+
+⸻
+
+OUTPUT FORMAT
+
+Return the content as a SINGLE BLOCK (no language sections).
+
+⸻
+
+TEMPLATE (MANDATORY)
+
+nazev_produktu:
+typ_zazitku:
+hlavni_prinos:
+hlavni_vyhoda_1:
+hlavni_vyhoda_2:
+hlavni_vyhoda_3:
+cilova_skupina:
+
+typ_knihy:
+edice:
+jazyk:
+pro_koho:
+název_sady:
+hlavni_prodejni_point_1:
+hlavni_prodejni_point_2:
+hlavni_prodejni_point_3:
+doporučení_pro_koho:
+frakce:
+potřebné_vybavení:
+
+intro_text:
+intro_image_src:
+
+sekce_o_knize_nadpis:
+sekce_o_knize_text:
+
+img1_src:
+img1_alt:
+img1_note_title:
+img1_note_text:
+
+img2_src:
+img2_alt:
+
+img3_src:
+img3_alt:
+img3_caption_title:
+img3_caption_text:
+
+img4_src:
+img4_alt:
+img4_caption_title:
+img4_caption_text:
+
+sekce_obsah_nadpis:
+obsah_bod1:
+obsah_bod2:
+obsah_bod3:
+obsah_bod4:
+
+sekce_pravidla_nadpis:
+sekce_pravidla_text:
+
+sekce_lore_nadpis:
+sekce_lore_text:
+
+sekce_pro_koho_nadpis:
+pro_koho_bod1:
+pro_koho_bod2:
+pro_koho_bod3:
+
+sekce_frakce_nadpis:
+sekce_frakce_text:
+
+sekce_pozadavky_nadpis:
+pozadavek1_label:
+pozadavek1_text:
+pozadavek2_label:
+pozadavek2_text:
+pozadavek3_label:
+pozadavek3_text:
+
+sekce_navaznosti_nadpis:
+navaznost_radek1_label:
+navaznost_radek1_text:
+navaznost_radek2_label:
+navaznost_radek2_text:
+navaznost_radek3_label:
+navaznost_radek3_text:
+
+sekce_faq_nadpis:
+faq_otazka1:
+faq_odpoved1:
+faq_otazka2:
+faq_odpoved2:
+faq_otazka3:
+faq_odpoved3:
+faq_otazka4:
+faq_odpoved4:
+
+sekce_video_nadpis:
+video_url:
+
+⸻
+
+IMAGES (STRICT)
+
+Never generate URLs.
+
+Always return exactly:
+
+intro_image_src
+img1_src
+img2_src
+img3_src
+img4_src
+
+⸻
+
+VIDEO
+
+If no real video is known, return exactly:
+
+https://www.youtube.com/embed/
+
+⸻
+
+IMPORTANT
+
+Do not generate any output until the following is provided:
+	•	product name
+	•	EAN

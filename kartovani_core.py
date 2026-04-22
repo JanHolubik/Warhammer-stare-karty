@@ -4,12 +4,154 @@ from pathlib import Path
 from io import BytesIO
 from typing import Dict
 import re
+import glob
 
 import pandas as pd
 from docx import Document
 from bs4 import BeautifulSoup
 
 VAT_RATE = 1.21
+
+
+def load_color_catalog() -> dict[str, str]:
+    """
+    Načte products-*.csv ze složky colours a vrátí mapu:
+    normalized_color_name -> code_or_ean
+    """
+    base_dir = Path(__file__).resolve().parent
+    csv_files = sorted(glob.glob(str(base_dir / "colours/products-*.csv")))
+
+    color_map: dict[str, str] = {}
+
+    for csv_file in csv_files:
+        try:
+            df = pd.read_csv(csv_file, sep=";", dtype=str).fillna("")
+
+            for _, row in df.iterrows():
+                product_name = str(row.get("name", "")).strip()
+                product_code = str(row.get("code", "")).strip()
+                product_ean = str(row.get("ean", "")).strip()
+
+                if not product_name:
+                    continue
+
+                target_value = product_code or product_ean
+                if not target_value:
+                    continue
+
+                normalized = normalize_color_name(product_name)
+                if normalized:
+                    color_map[normalized] = target_value
+
+        except Exception:
+            continue
+
+    return color_map
+
+
+def normalize_color_name(text: str) -> str:
+    text = str(text or "").strip().lower()
+
+    prefixes = [
+        "citadel base:",
+        "citadel layer:",
+        "citadel shade:",
+        "citadel contrast:",
+        "citadel dry:",
+        "citadel technical:",
+        "citadel spray:",
+        "citadel air:",
+        "citadel colour:",
+    ]
+
+    for prefix in prefixes:
+        if text.startswith(prefix):
+            text = text[len(prefix):].strip()
+
+    text = re.sub(r"\s+", " ", text)
+    return text
+
+
+def extract_related_products_from_text(
+    text: str,
+    color_map: dict[str, str],
+    limit: int = 7,
+) -> list[str]:
+    """
+    Najde barvy v textu podle názvu a vrátí jejich kódy v pořadí výskytu.
+    """
+    source_text = str(text or "")
+    source_text_lower = source_text.lower()
+
+    matches: list[tuple[int, str]] = []
+
+    for color_name, product_code in color_map.items():
+        if not color_name:
+            continue
+
+        pattern = r"(?<!\w)" + re.escape(color_name.lower()) + r"(?!\w)"
+        match = re.search(pattern, source_text_lower, flags=re.IGNORECASE)
+
+        if match:
+            matches.append((match.start(), product_code))
+
+    matches.sort(key=lambda x: x[0])
+
+    seen = set()
+    result: list[str] = []
+
+    for _, product_code in matches:
+        if product_code in seen:
+            continue
+        seen.add(product_code)
+        result.append(product_code)
+
+        if len(result) >= limit:
+            break
+
+    return result
+
+
+def enrich_kartovani_df_with_related_products(
+    df: pd.DataFrame,
+    row_index: int,
+    limit: int = 13,
+) -> pd.DataFrame:
+    """
+    Z výsledného HTML popisu vytáhne názvy barev a doplní je do relatedProduct sloupců.
+    """
+    color_map = load_color_catalog()
+    if not color_map:
+        return df
+
+    df_out = df.copy()
+
+    related_columns = ["relatedProduct"] + [f"relatedProduct{i}" for i in range(2, limit + 1)]
+    for col in related_columns:
+        if col not in df_out.columns:
+            df_out[col] = ""
+
+    combined_text = "\n".join(
+        [
+            str(df_out.at[row_index, "description:cs"]) if "description:cs" in df_out.columns else "",
+            str(df_out.at[row_index, "description:en"]) if "description:en" in df_out.columns else "",
+            str(df_out.at[row_index, "description:sk"]) if "description:sk" in df_out.columns else "",
+            str(df_out.at[row_index, "description"]) if "description" in df_out.columns else "",
+        ]
+    )
+
+    combined_text = BeautifulSoup(combined_text, "html.parser").get_text(" ", strip=True)
+
+    related_codes = extract_related_products_from_text(
+        text=combined_text,
+        color_map=color_map,
+        limit=limit,
+    )
+
+    for i, col in enumerate(related_columns):
+        df_out.at[row_index, col] = related_codes[i] if i < len(related_codes) else ""
+
+    return df_out
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -65,7 +207,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "warscroll": ["kratky_univ.docx"],
         "dice": ["kratky.docx"],
         "upgrades": ["kratky.docx"],
-        "accessories": ["kratky_univ.docx"],
+        "accessories": ["stetce_kratky_text.docx"],
         "albi": ["kratky_albi.docx"],
     }
 
@@ -85,7 +227,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "warscroll": ["kratky_univ_en.docx"],
         "dice": ["kratky_en.docx"],
         "upgrades": ["kratky_en.docx"],
-        "accessories": ["kratky_univ_en.docx"],
+        "accessories": ["stetce_kratky_text_en.docx"],
         "albi": ["kratky_albi_en.docx"],
     }
 
@@ -105,7 +247,7 @@ def get_template_paths(template_dir: Path, template_type: str) -> Dict[str, Path
         "warscroll": ["kratky_univ_sk.docx"],
         "dice": ["kratky_sk.docx"],
         "upgrades": ["kratky_sk.docx"],
-        "accessories": ["kratky_univ_sk.docx"],
+        "accessories": ["stetce_kratky_text_sk.docx"],
         "albi": ["kratky_albi_sk.docx"],
     }
 
@@ -159,6 +301,7 @@ def create_kartovani_card_row(
         "availabilityOutOfStock": "Na dotaz",
         "itemType": product_type,
         "productVisibility": "visible",
+        "relatedVideo": "",
     }
 
     for idx in range(1, 11):
@@ -177,11 +320,16 @@ def create_kartovani_source_row(
     intro_image_src: str = "",
     image_urls: list[str] | None = None,
     video_url: str = "",
-    template_kind: str = "miniatures",
-    prompt_type: str = "miniatures",
+    template_kind: str = "",
+    prompt_type: str = "",
 ) -> pd.DataFrame:
     image_urls = image_urls or []
     price_without_vat = round(float(price) / VAT_RATE, 2) if price else 0.0
+
+    if not template_kind:
+        raise ValueError("template_kind musí být vyplněný (např. 'miniatures', 'accessories', 'books')")
+    if not prompt_type:
+        raise ValueError("prompt_type musí být vyplněný (např. 'miniatures', 'accessories', 'books')")
 
     row = {
         "code": code,
@@ -227,14 +375,35 @@ def build_kartovani_prompt(
     product_name: str,
     product_ean: str,
     product_code: str = "",
+    lang: str = "cs",
 ) -> str:
-    template_path = PROMPT_TEMPLATE_DIR / f"{prompt_type}.txt"
+    lang = lang.strip().lower()
+
+    if lang not in {"cs", "en", "sk"}:
+        raise ValueError(f"Neplatný jazyk: {lang}")
+
+    template_path = PROMPT_TEMPLATE_DIR / f"{prompt_type}_{lang}.txt"
     if not template_path.exists():
         raise FileNotFoundError(f"Šablona promptu nenalezena: {template_path}")
 
     template_text = template_path.read_text(encoding="utf-8")
 
     return f"""{template_text}
+
+--------------------------------------------------
+SEQUENTIAL API MODE
+--------------------------------------------------
+
+V tomto běhu generuj pouze 1 jazyk.
+
+LANG_MODE
+{lang}
+
+PRAVIDLO
+Vrať pouze jeden jazykový blok:
+[LANG={lang}]
+
+Nikdy negeneruj jiné jazykové bloky než [LANG={lang}].
 
 --------------------------------------------------
 PRODUKT
@@ -398,7 +567,6 @@ def cleanup_rendered_html(html: str, values: dict) -> str:
     img4_valid = is_valid_image(values.get("img4_src", ""))
     video_valid = is_valid_video(values.get("video_url", ""))
 
-    # Hero image
     hero_image = soup.select_one(".hero-image")
     hero = soup.select_one(".hero")
     if hero_image and not intro_valid:
@@ -406,7 +574,6 @@ def cleanup_rendered_html(html: str, values: dict) -> str:
         if hero:
             add_class(hero, "no-image")
 
-    # Story image + story note
     story_media = soup.select_one(".story-media")
     story_split = soup.select_one(".story-split")
     if story_media and not img1_valid:
@@ -414,7 +581,6 @@ def cleanup_rendered_html(html: str, values: dict) -> str:
         if story_split:
             add_class(story_split, "no-image")
 
-    # Full bleed image + divider
     full_bleed = soup.select_one(".full-bleed-image")
     if full_bleed and not img2_valid:
         prev = full_bleed.find_previous_sibling()
@@ -422,7 +588,6 @@ def cleanup_rendered_html(html: str, values: dict) -> str:
             prev.decompose()
         full_bleed.decompose()
 
-    # Duo gallery cards
     duo_gallery = soup.select_one(".duo-gallery")
     if duo_gallery:
         duo_cards = duo_gallery.select(":scope > .duo-card")
@@ -439,14 +604,12 @@ def cleanup_rendered_html(html: str, values: dict) -> str:
         elif len(duo_cards) == 0:
             duo_gallery.decompose()
 
-    # Video section
     if not video_valid:
         for section in soup.select("section.section-card"):
             iframe = section.select_one("iframe")
             if iframe:
                 section.decompose()
 
-    # Remove any invalid images that still remain
     for img in soup.find_all("img"):
         src = (img.get("src") or "").strip()
         if not is_valid_image(src):
@@ -456,7 +619,6 @@ def cleanup_rendered_html(html: str, values: dict) -> str:
             else:
                 img.decompose()
 
-    # Remove invalid iframes
     for iframe in soup.find_all("iframe"):
         src = (iframe.get("src") or "").strip()
         if not is_valid_video(src):
@@ -536,10 +698,6 @@ def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict 
         short_html = replace_placeholders_in_docx(short_files[lang], values)
         long_html = replace_placeholders_in_docx(long_files[lang], values)
 
-        # SHORT nečistit, aby se nesahalo na <style>
-        # short_html = cleanup_rendered_html(short_html, values)
-
-        # DETAIL čistit můžeš
         long_html = cleanup_rendered_html(long_html, values)
 
         short_errors = validate_final_html(short_html)
@@ -558,7 +716,10 @@ def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict 
             or values.get("název_sady", "").strip()
             or values.get("nazev_sady", "").strip()
         )
-        short_desc = values.get("kratky_popis", "").strip()
+        short_desc = (
+            values.get("kratky_popis", "").strip()
+            or values.get("strucny_popis_produktu", "").strip()
+        )
 
         final_short = f"{product_name} {short_desc}".strip()
         final_short = final_short.replace("\n", " ").replace("\r", " ")
@@ -569,6 +730,7 @@ def build_kartovani_html(ai_output: str, template_kind: str, extra_values: dict 
         out[f"metaDescription:{lang}"] = final_short[:155] if final_short else ""
 
     return out
+
 
 def apply_kartovani_output_to_csv(
     df: pd.DataFrame,
@@ -585,16 +747,15 @@ def apply_kartovani_output_to_csv(
             df_out[col] = ""
         df_out.at[row_index, col] = value
 
-    if extra_values:
-        if "video_url" in extra_values:
-            if "video_url" not in df_out.columns:
-                df_out["video_url"] = ""
-            df_out.at[row_index, "video_url"] = extra_values["video_url"]
+    if extra_values and "video_url" in extra_values:
+        if "video_url" not in df_out.columns:
+            df_out["video_url"] = ""
+        df_out.at[row_index, "video_url"] = extra_values["video_url"]
 
-            df_out = df_out.drop(
-                columns=[c for c in ["product_name", "name", "description", "shortDescription"] if c in df_out.columns],
-                errors="ignore"
-            )
+    df_out = df_out.drop(
+        columns=[c for c in ["product_name", "name", "description", "shortDescription"] if c in df_out.columns],
+        errors="ignore"
+    )
 
     preferred_order = [
         "code",
@@ -614,6 +775,7 @@ def apply_kartovani_output_to_csv(
         "manufacturer",
         "itemType",
         "video_url",
+        "relatedVideo",
         "availabilityInStock",
         "availabilityOutOfStock",
         "ean",
@@ -636,5 +798,11 @@ def apply_kartovani_output_to_csv(
 
     df_out = df_out[existing_preferred + remaining_cols]
     df_out = df_out.fillna("")
+
+    df_out = enrich_kartovani_df_with_related_products(
+        df=df_out,
+        row_index=row_index,
+        limit=13,
+    )
 
     return df_out

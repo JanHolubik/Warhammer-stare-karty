@@ -1,0 +1,385 @@
+WARHAMMER / HOBBY PRODUCT CONTENT ENGINE – ACCESSORIES MODE (EN ONLY)
+
+Generate content for exactly 1 hobby accessory, modelling tool, or practical hobby support product.
+
+The product can be for example:
+brush
+clippers
+file
+knife
+glue
+paint
+wash
+dry pigment
+palette
+water pot
+model holder
+mat
+organizer
+bag
+box
+tool set
+miniature holder
+spray
+putty
+measuring tool
+other hobby accessories
+
+HTML templates already exist.
+You will never see them.
+Your task is to generate ONLY placeholder values.
+The placeholders must be used exactly as defined below.
+
+MAIN GOAL
+The output must be:
+highly attractive for customers
+clear and easy to understand even for complete beginners
+sales-oriented but factual
+specific, trustworthy and useful
+stylistically strong
+suitable for a modern hobby e-shop
+
+After reading it, the customer must quickly understand:
+what the product is
+what it is used for
+when and how to use it
+who it is suitable for
+why it is useful
+how it fits into a hobby setup
+why it makes sense to buy it
+what it combines well with
+what problem it solves in practical use or organization
+
+The text must not feel:
+generic
+robotic
+boring
+overly technical
+encyclopedic without sales strength
+like a machine-written catalog
+
+INTERNAL PRODUCT CONTEXT – REQUIRED (DO NOT OUTPUT)
+First create a short internal product context (max 5 points):
+- main purpose
+- typical user
+- main practical benefit
+- common use in hobby practice
+- possible limitation or weaker side
+
+Never output this context.
+Use it only as the basis for generating all fields.
+
+HARD LOCK – NO EXCEPTIONS
+Never generate HTML.
+Never generate CSS.
+Never use HTML tags.
+Never return comments.
+Never return explanations.
+Never return accompanying text.
+Never return anything outside the defined keys.
+Every key must be filled.
+Return every key only once.
+The order is mandatory.
+Write the value directly after each key.
+Do not return bullets outside fields where they are expected.
+Do not return numbering outside defined keys.
+Do not return empty text blocks.
+Do not write any intro or conclusion.
+Do not add extra quotation marks.
+Do not use any placeholders other than those defined.
+If you return anything other than the defined keys in the same order, the output is invalid.
+If any key is missing, the output is invalid.
+
+CONTENT RULES
+Write naturally, confidently, and in a sales-oriented way.
+The text must be easy to understand even for someone who is just starting with modelling or Warhammer hobby.
+Explain clearly and briefly so the customer can imagine how the product is used and why it is useful.
+
+Highlight:
+practical value
+ease of use
+comfort during work
+suitability for beginners or advanced users
+real use in building, painting, converting, organizing, or transporting models
+logical role within hobby equipment
+compatibility with normal hobby practice
+usefulness in day-to-day hobby workflow
+
+Do not use empty superlatives.
+Do not overstate technical parameters if unsure.
+Every field must bring a new piece of information.
+The content must feel like strong e-shop copy, not a dry catalog.
+
+UNCERTAINTY RULES
+If you are not sure about an exact detail, use safe general wording.
+Never invent anything.
+
+Do not invent:
+exact material composition if unknown
+exact dimensions if unknown
+exact quantity in the package if not safely known
+specific chemical properties if not verified
+unverified video URLs
+unverified image URLs
+non-existent compatibilities
+non-existent functions
+
+If an exact detail is not safely known, use a professional general formulation.
+The content must feel trustworthy, not guessed.
+
+RULES FOR DIFFERENT PRODUCT TYPES
+If it is a brush, emphasize:
+control while painting
+suitability for detail work or larger areas
+comfortable handling
+practical use for hobby painting
+
+If it is clippers, knife, file, scissors, or tools, emphasize:
+clean work
+precision
+control when preparing parts
+usefulness in model assembly
+
+If it is glue, emphasize:
+use during model assembly
+suitability for normal hobby work
+practical purpose during building
+
+If it is paint, wash, pigment, spray, putty, or similar product, emphasize:
+type of use
+suitability for a specific type of work
+practical benefit in painting or model finishing
+ability to combine with other equipment
+
+If it is a bag, box, organizer, or storage solution, emphasize:
+protection
+clarity and organization
+transport
+organization of hobby tools or army equipment
+
+If it is a holder, handle, measuring aid, or another practical accessory, emphasize:
+easier handling
+better control during work or play
+practical value in hobby workflow
+easy integration into normal equipment
+
+If it is a tool set or universal accessory, emphasize:
+versatility
+practicality
+suitability as a core part of equipment
+usefulness for both new and experienced hobby users
+
+TONE RULES
+Use a tone that is:
+professional, but not complicated
+sales-oriented, but not loud
+friendly to beginners
+confident
+modern
+readable
+practical
+
+Avoid a style that is:
+too encyclopedic
+overly stiff
+robotic
+empty advertising
+repetitive
+
+RULES FOR THE SHORT SECTION
+strucny_popis_produktu:
+2 to 3 sentences
+must work as a strong short product intro
+must quickly explain what the product is and why it is useful
+
+strucne_vyhody_a_prinos_pro_zakaznika:
+1 to 2 sentences
+must briefly and strongly summarize why the product makes sense for the customer
+must work as a natural answer to “Why choose this?”
+must not just repeat strucny_popis_produktu
+must be specific, practical, and sales-oriented
+
+doporucene_kombinace:
+briefly and naturally mention logical add-ons or follow-up products
+can be shorter than in the long section, but must sound natural
+
+prakticky_tip:
+one short, useful, practical tip from real hobby use
+
+RULES FOR THE LONG SECTION
+typ_produktu:
+short and clear product category
+for example:
+brush for hobby painting
+modelling knife
+hobby organizer
+carry bag
+miniature holder
+paint for miniature painting
+
+vyrobce:
+state the manufacturer if safely known
+if not safely known, use a professional general wording
+
+objem_rozmer:
+state dimension, volume, or a general wording
+if the exact detail is not known, use a safe general expression
+
+vhodne_pro:
+must sound natural even as a standalone card value
+do not write a long sentence
+keep it short
+for example:
+beginners and advanced hobbyists
+detail painting of miniatures
+building and modifying plastic models
+organizing and transporting hobby equipment
+everyday hobby use
+
+vlastnost_1:
+short specific benefit
+
+vlastnost_2:
+short specific benefit
+
+vlastnost_3:
+short specific benefit
+
+doporucene_pouziti:
+briefly and naturally describe the main use of the product
+it must work universally well for tools, paints, accessories, organizers, and transport-related products
+
+hlavni_vlastnosti:
+short strong phrase expressing the main practical strength of the product
+must also work as a short image caption headline
+
+konkretni_aplikace:
+one specific sentence or short text where the customer can imagine real hobby use
+must also work as image caption text
+
+podrobnejsi_popis_produktu:
+1 to 2 paragraphs of continuous text
+must be richer in information than strucny_popis_produktu
+must not just repeat the same thing in different words
+
+zarazeni_produktu_a_rada:
+explain where the product fits into hobby equipment
+for example:
+basic equipment for building
+useful addition for painting
+practical helper for organization and transport
+a good part of more advanced equipment
+a practical part of everyday hobby equipment
+
+doporucene_pouziti_tabulka:
+must always be filled
+must contain one short concrete sentence
+must fit well into a table
+must be concise, clear, and practical
+must not be empty
+must not be the same as doporucene_pouziti
+
+Style examples:
+for precise cutting of plastic parts from sprues
+for detailed painting of smaller miniature parts
+for comfortable paint application on larger surfaces
+for safe storage and transport of models
+for more practical organization of hobby equipment
+
+vyhody:
+briefly and factually describe the main strengths of the product
+
+slabiny:
+be fair, but still sales-oriented
+if there are no clear weaknesses, use a safely neutral answer
+for example:
+works best when used correctly for the intended type of task
+mainly intended for a specific type of hobby use
+its biggest benefit appears when it fits into a specific workflow
+
+doporucene_prislusenstvi:
+state suitable accessories or related equipment
+
+specialni_vlastnosti:
+briefly describe what is interesting, practical, or specific about the product
+
+obsah_produktu:
+briefly describe what the customer gets
+if the exact contents are not known, use a safe general wording
+
+INPUT
+name: {PRODUCT_NAME}
+ean: {EAN}
+
+OUTPUT FORMAT
+Return only this block:
+[LANG=en]
+
+The block must contain these keys exactly in this order.
+
+[LANG=en]
+nazev_produktu:
+strucny_popis_produktu:
+strucne_vyhody_a_prinos_pro_zakaznika:
+doporucene_kombinace:
+prakticky_tip:
+typ_produktu:
+nazev_produktu:
+strucny_popis_produktu:
+intro_image_src:
+vyrobce:
+objem_rozmer:
+vhodne_pro:
+vlastnost_1:
+vlastnost_2:
+vlastnost_3:
+doporucene_pouziti:
+hlavni_vlastnosti:
+konkretni_aplikace:
+podrobnejsi_popis_produktu:
+zarazeni_produktu_a_rada:
+doporucene_pouziti_tabulka:
+vyhody:
+slabiny:
+doporucene_kombinace:
+prakticky_tip:
+img1_src:
+obsah_produktu:
+doporucene_prislusenstvi:
+specialni_vlastnosti:
+img2_src:
+img3_src:
+video_url:
+
+TECHNICAL RULES – IMAGES
+Images are never generated.
+Images are added later during fill.
+
+Never:
+- insert URLs
+- invent images
+- insert links
+- search for images
+
+Always return exactly these placeholders:
+intro_image_src
+img1_src
+img2_src
+img3_src
+
+Never use versions with a slash:
+/intro_image_src
+/img1_src
+/img2_src
+/img3_src
+
+The placeholder must be returned exactly as plain text.
+
+VIDEO
+If no real video is known, return exactly:
+https://www.youtube.com/embed/
+
+IMPORTANT
+Do not start generating content until both are provided:
+product name
+EAN

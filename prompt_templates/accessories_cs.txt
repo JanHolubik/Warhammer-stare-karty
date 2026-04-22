@@ -1,6 +1,6 @@
-WARHAMMER / HOBBY PRODUCT CONTENT ENGINE – ACCESSORIES MODE
+WARHAMMER / HOBBY PRODUCT CONTENT ENGINE – ACCESSORIES MODE (CZ ONLY)
 
-Generuj obsah pouze pro 1 produkt z hobby příslušenství nebo modelářské výbavy.
+Generuj obsah pouze pro 1 produkt z hobby příslušenství, modelářské výbavy nebo praktických doplňků pro hobby použití.
 
 Produkt může být například:
 štětec
@@ -19,6 +19,10 @@ organizér
 taška
 krabička
 sada nářadí
+holder na figurky
+sprej
+tmel
+metr
 jiné hobby příslušenství
 
 HTML šablony již existují.
@@ -38,12 +42,13 @@ vhodný pro moderní hobby e-shop
 Zákazník musí po přečtení rychle pochopit:
 co je to za produkt
 k čemu slouží
+kdy a jak ho využije
 pro koho je vhodný
 v čem je užitečný
 jak zapadá do hobby výbavy
 proč dává smysl si ho koupit
 s čím ho kombinovat
-jaký problém při práci řeší
+jaký problém při práci nebo organizaci řeší
 
 Text nesmí působit:
 genericky
@@ -75,7 +80,6 @@ Nikdy nevracej nic mimo definované klíče.
 Každý klíč musí být vyplněn.
 Každý klíč vrať pouze jednou.
 Pořadí klíčů je závazné.
-Používej jazyk přesně podle aktuálního jazykového bloku.
 Za každý klíč napiš rovnou hodnotu.
 Nevracej odrážky mimo pole, kde jsou obsahově očekávané.
 Nevracej číslování mimo definované klíče.
@@ -99,6 +103,7 @@ vhodnost pro začátečníky nebo pokročilé
 reálné použití při stavbě, barvení, konverzích, organizaci nebo přenášení modelů
 logické zařazení do hobby výbavy
 kompatibilitu s běžnou hobby praxí
+praktičnost v každodenním hobby provozu
 
 Nepoužívej prázdné superlativy bez obsahu.
 Nepřeháněj technické parametry, pokud si nejsi jistý.
@@ -129,7 +134,7 @@ vhodnost pro detaily nebo větší plochy
 komfort držení
 praktické využití pro hobby malbu
 
-Pokud jde o kleštičky, nůž, pilník nebo nářadí, zdůrazni:
+Pokud jde o kleštičky, nůž, pilník, nůžky nebo nářadí, zdůrazni:
 čistotu práce
 přesnost
 kontrolu při opracování dílů
@@ -140,10 +145,10 @@ použití při kompletaci modelů
 vhodnost pro běžnou práci hobby modeláře
 praktičnost a účel při sestavování
 
-Pokud jde o barvu, wash, pigment nebo podobný produkt, zdůrazni:
+Pokud jde o barvu, wash, pigment, sprej, tmel nebo podobný produkt, zdůrazni:
 charakter použití
 vhodnost pro konkrétní typ práce
-praktický přínos při malování
+praktický přínos při malování nebo úpravě modelu
 možnost kombinace s další výbavou
 
 Pokud jde o tašku, box, organizér nebo úložné řešení, zdůrazni:
@@ -151,6 +156,12 @@ ochranu
 přehlednost
 přenos
 organizaci hobby vybavení nebo armády
+
+Pokud jde o holder, držák, měřicí pomůcku nebo jiné praktické příslušenství, zdůrazni:
+snadnější manipulaci
+lepší kontrolu při práci nebo hře
+praktický přínos v hobby provozu
+snadné začlenění do běžné výbavy
 
 Pokud jde o sadu nářadí nebo univerzální příslušenství, zdůrazni:
 všestrannost
@@ -175,58 +186,55 @@ robotickému
 prázdně reklamnímu
 opakujícímu se
 
-PRAVIDLA PRO KRÁTKOU ŠABLONU
-typ_zazitku:
-musí popisovat hobby kontext, ne obecný produkt
-používej formulace jako:
-malování miniatur
-stavba modelů
-modelářská práce
-práce s detaily
-organizace hobby výbavy
-péče o hobby vybavení
-transport a ochrana modelů
-
-hlavni_prinos:
-jedna silná věta nebo krátká formulace, která rychle řekne hlavní užitek produktu
-
-hlavni_vyhoda_1:
-krátký konkrétní benefit
-
-hlavni_vyhoda_2:
-krátký konkrétní benefit
-
-hlavni_vyhoda_3:
-krátký konkrétní benefit
-
-cilova_skupina:
-stručně popiš, pro koho je produkt vhodný
-například:
-začínající modeláře
-pokročilé hobby hráče
-každého, kdo staví a barví miniatury
-hráče, kteří chtějí mít vybavení lépe pod kontrolou
-
-SPECIÁLNÍ PRAVIDLO – doporucene_pouziti_tabulka
-doporucene_pouziti_tabulka:
-musí být vždy vyplněno
-musí obsahovat jednu krátkou konkrétní větu
-musí být vhodné do tabulky
-musí být stručné, jasné a praktické
-nesmí být prázdné
-nesmí být stejné jako doporucene_pouziti
-
-Příklady stylu:
-pro přesné stříhání plastových dílů z rámečků
-pro detailní malování menších částí miniatur
-pro pohodlné nanášení barvy na větší plochy
-pro bezpečné uložení a přenášení modelů
-
-PRAVIDLA PRO JEDNOTLIVÁ POLE
+PRAVIDLA PRO KRÁTKOU ČÁST
 strucny_popis_produktu:
 2 až 3 věty
-má fungovat jako silný úvod do hero sekce
+má fungovat jako silný krátký popis produktu
 má rychle vysvětlit, co je produkt zač a proč je užitečný
+
+strucne_vyhody_a_prinos_pro_zakaznika:
+1 až 2 věty
+musí stručně a silně shrnout, proč dává produkt zákazníkovi smysl
+má fungovat jako přirozená odpověď na otázku „Proč si to vybrat?“
+nemá jen opakovat strucny_popis_produktu
+má být konkrétní, praktické a prodejní
+
+doporucene_kombinace:
+stručně a přirozeně uveď logické doplňky nebo návazné produkty
+může být kratší než v dlouhé části, ale musí znít přirozeně
+
+prakticky_tip:
+jedna stručná, užitečná a konkrétní rada z praxe
+
+PRAVIDLA PRO DLOUHOU ČÁST
+typ_produktu:
+stručné a jasné zařazení produktu
+například:
+štětec pro hobby malbu
+modelářský nůž
+hobby organizér
+transportní taška
+držák na miniatury
+barva pro malování miniatur
+
+vyrobce:
+uveď výrobce, pokud je bezpečně známý
+pokud není bezpečně známý, použij obecnou profesionální formulaci
+
+objem_rozmer:
+uveď rozměr, objem nebo obecnou formulaci
+pokud přesný údaj není známý, použij bezpečný obecný výraz
+
+vhodne_pro:
+musí znít přirozeně i samostatně jako hodnota v kartě
+nepiš dlouhé souvětí
+piš stručně
+například:
+začátečníky i pokročilé modeláře
+detailní malování miniatur
+stavbu a úpravu plastových modelů
+organizaci a přenos hobby vybavení
+každodenní hobby použití
 
 vlastnost_1:
 krátký konkrétní benefit
@@ -239,6 +247,7 @@ krátký konkrétní benefit
 
 doporucene_pouziti:
 stručně a přirozeně popiš hlavní použití produktu
+musí znít univerzálně dobře i pro nářadí, barvy, doplňky, organizéry i transportní příslušenství
 
 hlavni_vlastnosti:
 krátká silná formulace, která vystihne praktickou přednost produktu
@@ -260,6 +269,22 @@ základní vybavení pro stavbu
 užitečný doplněk pro malování
 praktický pomocník pro organizaci a transport
 vhodná součást pokročilejší výbavy
+praktická součást každodenní hobby výbavy
+
+doporucene_pouziti_tabulka:
+musí být vždy vyplněno
+musí obsahovat jednu krátkou konkrétní větu
+musí být vhodné do tabulky
+musí být stručné, jasné a praktické
+nesmí být prázdné
+nesmí být stejné jako doporucene_pouziti
+
+Příklady stylu:
+pro přesné stříhání plastových dílů z rámečků
+pro detailní malování menších částí miniatur
+pro pohodlné nanášení barvy na větší plochy
+pro bezpečné uložení a přenášení modelů
+pro praktičtější organizaci hobby vybavení
 
 vyhody:
 stručně a věcně popiš hlavní silné stránky produktu
@@ -272,78 +297,32 @@ nejlépe vynikne při správném použití v odpovídajícím typu práce
 určeno hlavně pro konkrétní typ hobby použití
 největší přínos má ve chvíli, kdy zapadá do konkrétního pracovního postupu
 
-doporucene_kombinace:
-uváděj logické doplňky nebo návazné produkty
-například:
-modelářský nůž
-podložka na řezání
-lepidlo na plasty
-barvy a štětce
-organizér na hobby vybavení
-transportní pouzdro
-
-prakticky_tip:
-jedna stručná, užitečná a konkrétní rada z praxe
-
-obsah_produktu:
-stručně popiš, co zákazník dostane
-pokud není znám přesný obsah balení, použij bezpečnou obecnou formulaci
-
 doporucene_prislusenstvi:
 uveď vhodné doplňky nebo návazné vybavení
 
 specialni_vlastnosti:
 stručně popiš, čím je produkt zajímavý, praktický nebo specifický
 
-vhodne_pro:
-musí znít přirozeně i samostatně jako hodnota v kartě
-nepiš dlouhé souvětí
-piš stručně
-například:
-začátečníky i pokročilé modeláře
-detailní malování miniatur
-stavbu a úpravu plastových modelů
-organizaci a přenos hobby vybavení
+obsah_produktu:
+stručně popiš, co zákazník dostane
+pokud není znám přesný obsah balení, použij bezpečnou obecnou formulaci
 
 VSTUP
 name: {PRODUCT_NAME}
 ean: {EAN}
 
 FORMÁT VÝSTUPU
-Vrať obsah ve 3 blocích přesně v tomto pořadí:
+Vrať pouze tento blok:
 [LANG=cs]
-…
-[LANG=en]
-…
-[LANG=sk]
-…
 
-Každý jazykový blok musí obsahovat stejné klíče ve stejném pořadí.
+Blok musí obsahovat tyto klíče přesně v tomto pořadí.
 
-POKYNY K JAZYKŮM
 [LANG=cs]
-piš česky
-
-[LANG=en]
-piš přirozenou angličtinou pro e-shop
-nevkládej české věty
-placeholdery musí zůstat česky, mění se pouze hodnota
-
-[LANG=sk]
-piš přirozenou slovenštinou pro e-shop
-nevkládej české věty
-placeholdery musí zůstat česky, mění se pouze hodnota
-
-KRÁTKÁ ŠABLONA
 nazev_produktu:
-typ_zazitku:
-hlavni_prinos:
-hlavni_vyhoda_1:
-hlavni_vyhoda_2:
-hlavni_vyhoda_3:
-cilova_skupina:
-
-DETAILNÍ ŠABLONA
+strucny_popis_produktu:
+strucne_vyhody_a_prinos_pro_zakaznika:
+doporucene_kombinace:
+prakticky_tip:
 typ_produktu:
 nazev_produktu:
 strucny_popis_produktu:
@@ -372,10 +351,7 @@ img2_src:
 img3_src:
 video_url:
 
---------------------------------------------------
 TECHNICKÁ PRAVIDLA – OBRÁZKY
---------------------------------------------------
-
 Obrázky se nikdy negenerují.
 Obrázky se doplňují až ve fillu mimo tento krok.
 
@@ -386,7 +362,6 @@ Nikdy:
 - nehledáš obrázky
 
 Vždy vrať přesně placeholder:
-
 intro_image_src
 img1_src
 img2_src
@@ -400,10 +375,7 @@ Nikdy nepoužívej variantu s lomítkem:
 
 Placeholder musí být vrácen přesně jako text bez úprav.
 
---------------------------------------------------
 VIDEO
---------------------------------------------------
-
 Pokud není známé reálné video, vrať přesně:
 https://www.youtube.com/embed/
 
